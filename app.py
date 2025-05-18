@@ -35,3 +35,7 @@ def generate_script():
 @app.route("/")
 def index():
     return "✅ GPT-4 Vegetable Script Server is running!"
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # Render가 지정한 포트 사용
+    app.run(host="0.0.0.0", port=port)
