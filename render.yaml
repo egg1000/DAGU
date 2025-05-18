@@ -1,3 +1,4 @@
-envVars:
-  - key: OPENAI_API_KEY
-   
+# envVars:
+#   - key: OPENAI_API_KEY
+#     value: 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
+
