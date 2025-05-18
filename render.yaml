@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: vegetable-gpt
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: OPENAI_API_KEY
+        value: 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
