@@ -4,43 +4,48 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# OpenRouter API key and endpoint
+# Set OpenRouter API key and base URL
 openai.api_key = os.environ.get('OPENROUTER_API_KEY')
 openai.api_base = "https://openrouter.ai/api/v1"
 
 @app.route('/', methods=['GET'])
 def index():
-    return "OpenRouter GPT-4 Server is running.", 200
+    return "OpenRouter GPT-4o server is running.", 200
 
 @app.route('/generate', methods=['POST'])
 def generate():
     try:
         data = request.get_json()
-        print("📥 Received data:", data)
+        print("📥 Received JSON:", data)
 
         if not data or 'prompt' not in data:
-            return jsonify({'error': 'Missing prompt in request.'}), 400
+            print("🚫 'prompt' key is missing.")
+            return jsonify({'error': "Missing 'prompt' in request."}), 400
 
-        user_prompt = data['prompt']
-        print("🧠 User prompt:", user_prompt)
+        prompt = data['prompt']
+        print("🧠 Prompt:", prompt)
 
-        completion = openai.ChatCompletion.create(
-            model="openai/gpt-4o",
-            messages=[{"role": "user", "content": user_prompt}]
+        print("🔑 API Key present:", openai.api_key is not None)
+        print("🌐 API Base:", openai.api_base)
+
+        # Call OpenRouter GPT-4o model
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}]
         )
 
-        print("✅ Raw completion result:", completion)
+        print("✅ Completion result:", response)
 
-        assistant_reply = completion['choices'][0]['message']['content']
-        return jsonify({'response': assistant_reply}), 200
+        reply = response['choices'][0]['message']['content']
+        return jsonify({'response': reply}), 200
 
     except openai.OpenAIError as e:
-        print("❌ OpenAI API error:", str(e))
+        print("❌ OpenAI API Error:", str(e))
         return jsonify({'error': str(e)}), 500
 
     except Exception as e:
         import traceback
-        print("❗ Unknown error occurred:")
+        print("❗ Unexpected error:")
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
