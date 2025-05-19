@@ -1,5 +1,6 @@
 import openai
 import os
+import traceback
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -27,7 +28,8 @@ def generate_script():
         return jsonify({"result": result})
 
     except Exception as e:
-        print(f"\u2757 GPT 호출 중 오류 발생: {str(e)}")
+        print("\u2757 GPT 호출 중 예외 발생:")
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
 @app.route("/")
@@ -38,3 +40,4 @@ def index():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
