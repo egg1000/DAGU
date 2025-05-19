@@ -27,10 +27,14 @@ def generate_script():
         return jsonify({"result": result})
 
     except Exception as e:
-        print(f"❗ GPT 호출 중 오류 발생: {str(e)}")
+        print(f"\u2757 GPT 호출 중 오류 발생: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/")
 def index():
-    return "✅ OpenRouter 기반 GPT 서버 작동 중!"
+    return "\u2705 OpenRouter 기반 GPT 서버 작동 중!"
 
+# Render에서 포트를 인식하게 설정
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
