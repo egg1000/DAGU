@@ -2,14 +2,11 @@ import os
 import openai
 from flask import Flask, request, jsonify
 
-# ✅ app 정의 먼저!
 app = Flask(__name__)
 
-# ✅ OpenRouter API 설정
 openai.api_key = os.environ.get('OPENROUTER_API_KEY')
 openai.api_base = "https://openrouter.ai/api/v1"
 
-# ✅ 라우팅은 그 다음에
 @app.route('/', methods=['GET'])
 def index():
     return "OpenRouter GPT-3.5 server is running.", 200
@@ -30,14 +27,15 @@ def generate():
         prompt = data['prompt']
         print("🧠 Prompt:", prompt)
 
-        response = openai.ChatCompletion.create(
+        # ✅ 최신 방식 사용
+        response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}]
         )
 
         print("✅ Completion result:", response)
 
-        reply = response['choices'][0]['message']['content']
+        reply = response.choices[0].message.content
         return jsonify({'response': reply}), 200
 
     except Exception as e:
@@ -46,7 +44,6 @@ def generate():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-# ✅ 마지막에 run()
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port
