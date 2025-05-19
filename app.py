@@ -18,8 +18,8 @@ def generate_script():
         if not prompt:
             return jsonify({"error": "No prompt provided."}), 400
 
-        response = openai.ChatCompletion.create(
-            model="openai/gpt-3.5-turbo",  # 또는 openai/gpt-4
+        response = openai.chat.completions.create(
+            model="openai/gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7
         )
