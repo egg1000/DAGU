@@ -21,11 +21,14 @@ def generate():
 
         user_prompt = data['prompt']
 
-        completion = openai.chat.completions.create(
+        # ✅ 수정된 GPT 호출 방식
+        completion = openai.ChatCompletion.create(
             model="openai/gpt-4o",
             messages=[{"role": "user", "content": user_prompt}]
         )
-        assistant_reply = completion.choices[0].message.content
+
+        # ✅ 수정된 응답 파싱 방식
+        assistant_reply = completion['choices'][0]['message']['content']
 
         return jsonify({'response': assistant_reply}), 200
 
@@ -37,6 +40,8 @@ def generate():
         return jsonify({'error': error_msg}), status_code
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()  # 콘솔에 에러 출력
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
