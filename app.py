@@ -48,3 +48,9 @@ if __name__ == '__main__':
     # Render 플랫폼 환경에서는 PORT 환경 변수가 지정됩니다.
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+
+except Exception as e:
+    print("❗ Unknown Error:")
+    traceback.print_exc()  # 이 줄 반드시 있어야 로그에 자세한 에러가 찍힙니다.
+    return jsonify({"error": str(e)}), 500
