@@ -4,13 +4,13 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Set OpenRouter API key and base URL
+# OpenRouter API settings
 openai.api_key = os.environ.get('OPENROUTER_API_KEY')
 openai.api_base = "https://openrouter.ai/api/v1"
 
 @app.route('/', methods=['GET'])
 def index():
-    return "OpenRouter GPT-4o server is running.", 200
+    return "OpenRouter GPT-3.5 server is running.", 200
 
 @app.route('/generate', methods=['POST'])
 def generate():
@@ -28,9 +28,9 @@ def generate():
         print("🔑 API Key present:", openai.api_key is not None)
         print("🌐 API Base:", openai.api_base)
 
-        # Call OpenRouter GPT-4o model
+        # ✅ Using a stable and free model
         response = openai.ChatCompletion.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",  # ✅ safest free model
             messages=[{"role": "user", "content": prompt}]
         )
 
