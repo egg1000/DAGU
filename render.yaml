@@ -1,4 +1,3 @@
-# envVars:
-#   - key: OPENAI_API_KEY
-#     value: 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
-
+envVars:
+  - key: OPENROUTER_API_KEY
+    value: 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
